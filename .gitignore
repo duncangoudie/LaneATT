@@ -1,0 +1,9 @@
+datasets/
+cache/
+tensorboard/
+experiments/*/models/
+experiments/*/results/
+experiments/*/results_backup/
+.idea/
+*/__pycache__/
+*.pyc

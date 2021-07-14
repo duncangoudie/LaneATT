@@ -1,0 +1,667 @@
+[2021-07-14 16:31:39,832] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:31:40,316] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:31:42,617] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:31:42,617] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:31:42,619] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 16:34:41,852] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:34:42,327] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:34:44,608] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:34:44,608] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:34:44,610] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:36:05,438] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:36:05,887] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:36:08,155] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:36:08,155] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:36:08,157] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:37:24,453] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:37:24,941] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:37:27,286] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:37:27,286] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:37:27,288] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:39:32,893] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:39:33,374] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:39:35,659] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:39:35,660] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:39:35,662] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:39:55,043] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:39:55,513] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:39:57,814] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:39:57,814] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:39:57,816] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:44:22,093] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:44:22,590] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:44:24,870] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:44:24,870] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:44:24,872] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 16:46:45,853] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 16:46:46,322] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 16:46:48,614] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 16:46:48,615] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 16:46:48,617] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 17:16:50,366] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 17:16:50,829] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 17:16:53,163] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 17:16:53,163] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 17:16:53,165] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 17:20:01,234] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 17:20:01,730] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 17:23:19,189] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 17:23:19,658] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 17:23:21,981] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 17:23:21,982] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 17:23:21,984] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+
+[2021-07-14 17:29:47,654] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_kitti', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 17:29:48,113] [lib.runner] [INFO] Loading model experiments/laneatt_r18_kitti/models/model_0015.pt
+[2021-07-14 17:29:50,393] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 17:29:50,394] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 17:29:50,396] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+              x: !!python/tuple [-25, 25]
+              y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: nolabel_dataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/kitti"
+
+

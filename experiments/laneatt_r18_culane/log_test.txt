@@ -1,0 +1,937 @@
+[2021-07-14 13:26:59,521] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 13:27:04,702] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 13:27:06,951] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 13:27:07,104] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 13:27:07,104] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 13:27:09,348] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 13:27:09,350] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 13:28:28,353] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 13:28:28,821] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 13:28:31,094] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 13:28:31,247] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 13:28:31,247] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 13:28:33,377] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 13:28:33,379] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 13:34:03,726] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 13:34:09,002] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 13:34:11,263] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 13:34:11,421] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 13:34:11,421] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 13:34:13,635] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 13:34:13,638] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 13:35:27,697] [lib.experiment] [DEBUG] Testing session finished on model after epoch 15.
+[2021-07-14 13:35:27,697] [lib.experiment] [INFO] Results:
+ {'TP': 5803, 'FP': 1516, 'FN': 2986, 'Precision': 0.7928678781254269, 'Recall': 0.660257139606326, 'F1': 0.7205115470573628}
+[2021-07-14 13:47:32,810] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view='all')
+[2021-07-14 13:47:33,286] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 13:47:35,555] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 13:47:35,711] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 13:47:35,711] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 13:47:37,927] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 13:47:37,929] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 13:51:17,300] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view='all')
+[2021-07-14 13:51:17,760] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 13:51:20,025] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 13:51:20,180] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 13:51:20,180] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 13:51:22,333] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 13:51:22,335] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:04:37,665] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view='all')
+[2021-07-14 15:04:38,142] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:04:40,379] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 15:04:40,531] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 15:04:40,531] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 15:04:42,698] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 15:04:42,700] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:30:17,386] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 15:30:22,499] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:30:27,341] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 15:30:27,546] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 15:30:27,547] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 15:30:29,736] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 15:30:29,739] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:44:35,834] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 15:44:36,300] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:44:38,545] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 15:44:38,698] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 15:44:38,698] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 15:44:40,874] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 15:44:40,878] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:45:35,404] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 15:45:35,876] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:45:38,138] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 15:45:38,293] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 15:45:38,294] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 15:45:40,448] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 15:45:40,450] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:45:50,750] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 15:45:51,269] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:45:53,530] [lib.datasets.culane] [INFO] Loading CULane annotations (cached)...
+[2021-07-14 15:45:53,683] [lib.datasets.culane] [INFO] 3071 annotations loaded, with a maximum of 4 lanes in an image.
+[2021-07-14 15:45:53,683] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2021-07-14 15:45:55,930] [lib.datasets.lane_dataset] [INFO] Done.
+[2021-07-14 15:45:55,932] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1000
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    backbone: resnet18
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 360
+    img_w: &img_w 640
+batch_size: 8
+epochs: 15
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.5
+  nms_thres: 50.
+  nms_topk: &max_lanes 4
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "datasets/culane"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: culane
+      split: val
+      img_size: [288, 512]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "datasets/culane"
+
+[2021-07-14 15:49:02,034] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg=None, cpu=False, deterministic=False, epoch=None, exp_name='laneatt_r18_culane', mode='test', resume=False, save_predictions=False, view=None)
+[2021-07-14 15:49:02,501] [lib.runner] [INFO] Loading model experiments/laneatt_r18_culane/models/model_0015.pt
+[2021-07-14 15:49:04,732] [lib.datasets.culane] [INFO] Loading CULane annotations and caching...
