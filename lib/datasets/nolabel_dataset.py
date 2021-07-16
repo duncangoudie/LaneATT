@@ -21,7 +21,8 @@ class NoLabelDataset(LaneDatasetLoader):
 
         # Force max_lanes, used when evaluating testing with models trained on other datasets
         # On NoLabelDataset, always force it
-        self.max_lanes = max_lanes
+        #self.max_lanes = max_lanes
+        self.max_lanes = 4 if max_lanes is None else max_lanes
 
 
 
